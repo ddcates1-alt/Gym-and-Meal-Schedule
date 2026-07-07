@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cates Program — Weekly Recomposition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f7f3;
+    --card:#ffffff;
+    --ink:#16211b;
+    --ink-soft:#4a564e;
+    --pine:#2e5943;
+    --pine-deep:#1d3d2e;
+    --pine-tint:#e7efe9;
+    --marker:#ffe15c;
+    --marker-soft:#fff4bf;
+    --line:#dde2d9;
+    --spot:#b3402a;
+    --spot-tint:#f9ece8;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --disp:'Barlow Condensed',sans-serif;
+    --body:'Barlow',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+
+  /* ---------- header ---------- */
+  header{padding:28px 0 18px;border-bottom:3px solid var(--ink)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pine)}
+  h1{font-family:var(--disp);font-weight:700;font-size:clamp(34px,7vw,52px);line-height:1;text-transform:uppercase;letter-spacing:.01em;margin-top:6px}
+  .role{font-size:14px;color:var(--ink-soft);margin-top:8px;max-width:56ch}
+
+  .targets{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .targets span{font-family:var(--mono);font-size:12.5px;background:var(--ink);color:var(--paper);padding:5px 10px;border-radius:3px;white-space:nowrap}
+  .targets span b{color:var(--marker);font-weight:500}
+
+  /* ---------- sticky day nav ---------- */
+  nav{position:sticky;top:0;z-index:10;background:var(--paper);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:6px;justify-content:space-between}
+  nav a{flex:1;text-align:center;text-decoration:none;font-family:var(--disp);font-weight:600;font-size:15px;text-transform:uppercase;color:var(--ink);padding:7px 0;border:1px solid var(--line);border-radius:4px;background:var(--card);position:relative}
+  nav a.lift::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--pine)}
+  nav a.today{background:var(--marker);border-color:var(--ink);font-weight:700}
+  nav a:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+
+  /* ---------- section headers ---------- */
+  section{margin-top:36px}
+  .sec-head{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:16px}
+  .sec-head h2{font-family:var(--disp);font-weight:700;font-size:26px;text-transform:uppercase}
+  .sec-head .tag{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase}
+
+  /* ---------- day cards ---------- */
+  .day{background:var(--card);border:1px solid var(--line);border-radius:6px;margin-bottom:14px;overflow:hidden;scroll-margin-top:64px}
+  .day.lift{border-left:5px solid var(--pine)}
+  .day.rest{border-left:5px solid var(--line)}
+  .day.today-card{box-shadow:0 0 0 2px var(--ink)}
+  .day-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--pine-tint)}
+  .day.rest .day-head{background:#f0f2ee}
+  .day-head h3{font-family:var(--disp);font-weight:700;font-size:21px;text-transform:uppercase}
+  .today-flag{display:none;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.1em;background:var(--marker);border:1px solid var(--ink);padding:2px 8px;border-radius:3px}
+  .day.today-card .today-flag{display:inline-block}
+  .day.today-card .day-head{background:var(--marker-soft)}
+  .training{font-size:13.5px;font-weight:600;color:var(--pine-deep);padding:8px 14px;border-bottom:1px dashed var(--line)}
+  .day.rest .training{color:var(--ink-soft);font-weight:500}
+
+  .feed{display:grid;grid-template-columns:64px 1fr auto;gap:10px;padding:9px 14px;border-bottom:1px dashed var(--line);align-items:baseline}
+  .feed:last-of-type{border-bottom:none}
+  .feed .t{font-family:var(--mono);font-size:12px;color:var(--pine);white-space:nowrap}
+  .feed .m{font-size:14.5px}
+  .feed .kcal{font-family:var(--mono);font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  .day-total{display:flex;justify-content:space-between;padding:9px 14px;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12.5px}
+  .day-total b{color:var(--marker);font-weight:500}
+
+  /* ---------- lifting ---------- */
+  .lift-day{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--pine);border-radius:6px;margin-bottom:14px;overflow:hidden}
+  .lift-day-head{padding:10px 14px;background:var(--pine);color:#fff;font-family:var(--disp);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
+  .ex{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 14px;border-bottom:1px dashed var(--line)}
+  .ex:last-child{border-bottom:none}
+  .ex .name{font-weight:600;font-size:15px}
+  .ex .rx{font-family:var(--mono);font-size:12.5px;color:var(--pine-deep);white-space:nowrap;text-align:right}
+  .ex .note{grid-column:1/-1;font-size:13px;color:var(--ink-soft)}
+  .ex.spot{background:var(--spot-tint);border-left:3px solid var(--spot);padding-left:11px}
+  .ex.spot .name::before{content:"SPOT";font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;background:var(--spot);color:#fff;padding:2px 6px;border-radius:3px;margin-right:8px;vertical-align:1px}
+  .ex.spot .note{color:var(--spot);font-weight:500}
+
+  /* ---------- rules ---------- */
+  .rules{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .rule{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:11px 14px;border-bottom:1px dashed var(--line)}
+  .rule:last-child{border-bottom:none}
+  .rule dt{font-family:var(--disp);font-weight:600;font-size:16px;text-transform:uppercase;color:var(--pine-deep)}
+  .rule dd{font-size:14.5px}
+  .rule dd b{background:var(--marker-soft);padding:0 3px}
+
+  footer{margin-top:40px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+  @media (max-width:480px){
+    .rule{grid-template-columns:1fr}
+    .rule dt{margin-bottom:-4px}
+    .feed{grid-template-columns:56px 1fr}
+    .feed .kcal{grid-column:2;text-align:left}
+  }
+  @media print{
+    nav{display:none}
+    .day,.lift-day,.rules{break-inside:avoid;box-shadow:none}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">The Cates Program · Recomposition</div>
+  <h1>Week at a Glance</h1>
+  <p class="role">Weight loss with muscle retention — diet-led, three lifting days with Ruben, 5 g creatine daily.</p>
+  <div class="targets">
+    <span>KCAL <b>2,200–2,300</b></span>
+    <span>PROTEIN <b>150–170 g</b></span>
+    <span>WINDOW <b>12–8 pm</b></span>
+    <span>WATER <b>70–90 oz</b></span>
+    <span>CREATINE <b>5 g / day</b></span>
+  </div>
+</header>
+
+<nav aria-label="Jump to day">
+  <a href="#mon" data-day="1">Mon</a>
+  <a href="#tue" data-day="2" class="lift">Tue</a>
+  <a href="#wed" data-day="3">Wed</a>
+  <a href="#thu" data-day="4" class="lift">Thu</a>
+  <a href="#fri" data-day="5">Fri</a>
+  <a href="#sat" data-day="6" class="lift">Sat</a>
+  <a href="#sun" data-day="0">Sun</a>
+</nav>
+
+<!-- ============ TABLE 1 ============ -->
+<section id="table1">
+  <div class="sec-head"><h2>Table 1 — Training + Meals</h2><span class="tag">7 days</span></div>
+
+  <article class="day rest" id="mon" data-day="1">
+    <div class="day-head"><h3>Monday</h3><span class="today-flag">Today</span></div>
+    <div class="training">Rest or elliptical 25 min</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">200g Greek yogurt, 100g berries, 15g granola</span><span class="kcal">330 / 22g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">4 turkey meatballs 200g, 200g roasted veg, 250g baked potato, 60g tzatziki</span><span class="kcal">800 / 55g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami chocolate pint</span><span class="kcal">180 / 30g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,280 kcal / 148g protein</b></span></div>
+  </article>
+
+  <article class="day lift" id="tue" data-day="2">
+    <div class="day-head"><h3>Tuesday — Push</h3><span class="today-flag">Today</span></div>
+    <div class="training">PUSH with Ruben (~75 min) — full spotting duty on his bench</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">Apple + 28g mixed nuts</span><span class="kcal">270 / 6g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">225g chicken breast, 200g cooked rice, salad + 20g preserved lemon vinaigrette</span><span class="kcal">800 / 62g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami butterscotch pint</span><span class="kcal">180 / 35g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,250 kcal / 148g protein</b></span></div>
+  </article>
+
+  <article class="day rest" id="wed" data-day="3">
+    <div class="day-head"><h3>Wednesday</h3><span class="today-flag">Today</span></div>
+    <div class="training">Rest or elliptical 25 min</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">150g cooked leftover meat, salad, 15g vinaigrette</span><span class="kcal">450 / 45g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">200g salmon, 250g sweet potato + 5g gochugaru oil, charred broccoli</span><span class="kcal">750 / 48g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">150g Greek yogurt + cinnamon</span><span class="kcal">130 / 15g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,235 kcal / 146g protein</b></span></div>
+  </article>
+
+  <article class="day lift" id="thu" data-day="4">
+    <div class="day-head"><h3>Thursday — Pull</h3><span class="today-flag">Today</span></div>
+    <div class="training">PULL with Ruben (~75 min) — confirm his deadlift weight aloud, watch his back</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">200g cottage cheese, 100g berries</span><span class="kcal">280 / 25g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">4 beef meatballs 200g, 200g pasta or potato, tomato sauce, salad</span><span class="kcal">820 / 55g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,250 kcal / 152g protein</b></span></div>
+  </article>
+
+  <article class="day rest" id="fri" data-day="5">
+    <div class="day-head"><h3>Friday</h3><span class="today-flag">Today</span></div>
+    <div class="training">Rest or elliptical 25 min</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">2 eggs + 100g egg whites, 1 slice toast</span><span class="kcal">350 / 30g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">Steak Dinner Template: 170g cooked ribeye, torn sweet potatoes, greens, yogurt sauce</span><span class="kcal">860 / 55g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">150g Greek yogurt</span><span class="kcal">130 / 15g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,285 kcal / 143g protein</b></span></div>
+  </article>
+
+  <article class="day lift" id="sat" data-day="6">
+    <div class="day-head"><h3>Saturday — Legs</h3><span class="today-flag">Today</span></div>
+    <div class="training">LEGS with Ruben (~75 min) — set safety bars on his squats, guide re-rack</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">150g cooked chicken, wrap or salad, 60g tzatziki</span><span class="kcal">450 / 45g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">Flexible dinner: ~170g protein anchor, one starch, vegetables; weigh sauces used</span><span class="kcal">800 / 55g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,300 kcal / 157g protein</b></span></div>
+  </article>
+
+  <article class="day rest" id="sun" data-day="0">
+    <div class="day-head"><h3>Sunday — Review</h3><span class="today-flag">Today</span></div>
+    <div class="training">Recovery: ≤20 min easy walk, steam room + weekly review</div>
+    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
+    <div class="feed"><span class="t">3:30</span><span class="m">200g Greek yogurt, 100g berries, 20g nuts</span><span class="kcal">360 / 24g</span></div>
+    <div class="feed"><span class="t">7:00</span><span class="m">Batch-cook night: 200g protein, 250g starch, veg — cook extra for Mon/Wed lunches</span><span class="kcal">800 / 58g</span></div>
+    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
+    <div class="day-total"><span>DAY TOTAL</span><span><b>~2,285 kcal / 150g protein</b></span></div>
+  </article>
+</section>
+
+<!-- ============ TABLE 2 ============ -->
+<section id="table2">
+  <div class="sec-head"><h2>Table 2 — Lifting Details</h2><span class="tag">Interleaved with Ruben</span></div>
+
+  <div class="lift-day">
+    <div class="lift-day-head">Tuesday · Push</div>
+    <div class="ex spot"><span class="name">Ruben's barbell bench</span><span class="rx">all sets</span><span class="note">Spotting only — guide unrack, hands ready every set. No lifting.</span></div>
+    <div class="ex"><span class="name">Dumbbell bench press</span><span class="rx">3 × 8–10 · 35 lb/hand</span><span class="note">Adjacent bench, after spotting duty</span></div>
+    <div class="ex"><span class="name">Incline dumbbell press</span><span class="rx">3 × 8–10 · 25 lb/hand</span><span class="note">Alternate with Ruben, same bench</span></div>
+    <div class="ex"><span class="name">Seated DB shoulder press</span><span class="rx">2 × 8–10 · 20 lb/hand</span><span class="note">Ribs down, no lower-back arch</span></div>
+    <div class="ex"><span class="name">Lateral raises</span><span class="rx">2 × 12–15 · 10 lb</span><span class="note">Can run simultaneous with Ruben</span></div>
+    <div class="ex"><span class="name">Triceps pushdown</span><span class="rx">2 × 10–12 · pin 40</span><span class="note">Shared cable — move pin</span></div>
+    <div class="ex"><span class="name">Push-ups</span><span class="rx">2 sets · bodyweight</span><span class="note">Or skip</span></div>
+  </div>
+
+  <div class="lift-day">
+    <div class="lift-day-head">Thursday · Pull</div>
+    <div class="ex spot"><span class="name">Ruben's deadlifts</span><span class="rx">all sets</span><span class="note">Confirm weight aloud, watch his back. No lifting.</span></div>
+    <div class="ex"><span class="name">Lat pulldown</span><span class="rx">3 × 8–10 · pin 90</span><span class="note">Adjust to your clean 10-rep weight</span></div>
+    <div class="ex"><span class="name">Chest-supported row</span><span class="rx">3 × 8–10 · 25 lb/hand</span><span class="note">Alternate on same bench</span></div>
+    <div class="ex"><span class="name">Face pulls</span><span class="rx">2 × 12–15 · pin 25</span><span class="note">Keep light — shoulder health</span></div>
+    <div class="ex"><span class="name">Hammer curls</span><span class="rx">2 × 10–12 · 20 lb</span><span class="note">Then stretch while Ruben finishes</span></div>
+  </div>
+
+  <div class="lift-day">
+    <div class="lift-day-head">Saturday · Legs</div>
+    <div class="ex spot"><span class="name">Ruben's squats</span><span class="rx">all sets</span><span class="note">Set safety bars, guide re-rack. No lifting.</span></div>
+    <div class="ex"><span class="name">Dumbbell RDL</span><span class="rx">3 × 8–10 · 30 lb/hand</span><span class="note">Hard stop mid-shin — hypermobility rule</span></div>
+    <div class="ex"><span class="name">Leg press</span><span class="rx">3 × 10–12 · pin 110</span><span class="note">Shared machine — move pin</span></div>
+    <div class="ex"><span class="name">Leg curls</span><span class="rx">2 × 10–12 · pin 50</span><span class="note"></span></div>
+    <div class="ex"><span class="name">Calf raises (optional)</span><span class="rx">2 × 12–15 · 25 lb DBs</span><span class="note"></span></div>
+  </div>
+</section>
+
+<!-- ============ TABLE 3 ============ -->
+<section id="table3">
+  <div class="sec-head"><h2>Table 3 — Constants & Rules</h2><span class="tag">Every day</span></div>
+  <dl class="rules">
+    <div class="rule"><dt>Calories</dt><dd><b>2,200–2,300 fixed</b> — never eat back exercise calories</dd></div>
+    <div class="rule"><dt>Protein</dt><dd>150–170 g across 3 feedings (~40–60 g each)</dd></div>
+    <div class="rule"><dt>Creatine</dt><dd><b>5 g monohydrate in the noon shake, every day</b></dd></div>
+    <div class="rule"><dt>Water</dt><dd>70–90 oz (per labs)</dd></div>
+    <div class="rule"><dt>Fish oil / D3</dt><dd>1–2 g EPA/DHA daily · D3 dose pending bloodwork</dd></div>
+    <div class="rule"><dt>Effort</dt><dd>Every set stops 1–2 reps shy of failure</dd></div>
+    <div class="rule"><dt>Progression</dt><dd>3+ reps left in tank on final set → up one increment next time</dd></div>
+    <div class="rule"><dt>Hinges</dt><dd><b>Mid-range loading only</b> — no end range under load</dd></div>
+    <div class="rule"><dt>Sunday review</dt><dd>Weight trend (ignore daily noise until week 3), waist at navel, log calibration numbers for you + Ruben</dd></div>
+    <div class="rule"><dt>Protein short?</dt><dd>Full Creami pint instead of half (+30 g) or swap snack to cottage cheese</dd></div>
+    <div class="rule"><dt>Shared meals</dt><dd>Same food, different plates — Ruben gets the extras, yours get weighed</dd></div>
+  </dl>
+</section>
+
+<footer>
+  <span>The Cates Program · v1.0</span>
+  <span>Lean Shake Compact canonized July 2026</span>
+</footer>
+
+</div>
+<script>
+  // Highlighter: mark today across nav + day card
+  (function(){
+    var d = new Date().getDay(); // 0 = Sun
+    document.querySelectorAll('[data-day="'+d+'"]').forEach(function(el){
+      el.classList.add(el.tagName === 'A' ? 'today' : 'today-card');
+    });
+  })();
+</script>
+</body>
+</html>
