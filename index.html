@@ -3,69 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Cates Program — Daily, Both Lifters</title>
+<title>The Cates Program — Training Schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#f6f7f3;
-    --card:#ffffff;
-    --ink:#16211b;
-    --ink-soft:#4a564e;
-    --pine:#2e5943;
-    --pine-deep:#1d3d2e;
-    --pine-tint:#e7efe9;
-    --marker:#ffe15c;
-    --marker-soft:#fff4bf;
-    --line:#dde2d9;
-    --spot:#b3402a;
-    --spot-tint:#f9ece8;
-    --ruben:#274b73;
-    --ruben-tint:#e9eff6;
+    --paper:#f6f7f3; --card:#fff; --ink:#16211b; --ink-soft:#4a564e;
+    --pine:#2e5943; --pine-deep:#1d3d2e; --pine-tint:#e7efe9;
+    --marker:#ffe15c; --marker-soft:#fff4bf; --line:#dde2d9;
+    --spot:#b3402a; --spot-tint:#f9ece8;
+    --ruben:#274b73; --ruben-tint:#e9eff6;
     --mono:'IBM Plex Mono',ui-monospace,monospace;
-    --disp:'Barlow Condensed',sans-serif;
-    --body:'Barlow',system-ui,sans-serif;
+    --disp:'Barlow Condensed',sans-serif; --body:'Barlow',system-ui,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
-  .wrap{max-width:800px;margin:0 auto;padding:0 16px 80px}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px 80px}
 
-  header{padding:28px 0 18px;border-bottom:3px solid var(--ink)}
+  header{padding:26px 0 16px;border-bottom:3px solid var(--ink)}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pine)}
   h1{font-family:var(--disp);font-weight:700;font-size:clamp(32px,7vw,50px);line-height:1;text-transform:uppercase;margin-top:6px}
-  .role{font-size:14px;color:var(--ink-soft);margin-top:8px;max-width:60ch}
-  .targets{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .role{font-size:14px;color:var(--ink-soft);margin-top:8px;max-width:62ch}
+  .targets{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
   .targets span{font-family:var(--mono);font-size:12px;background:var(--ink);color:var(--paper);padding:5px 10px;border-radius:3px;white-space:nowrap}
   .targets span b{color:var(--marker);font-weight:500}
-  .legend{display:flex;gap:14px;margin-top:12px;font-family:var(--mono);font-size:11.5px}
+  .legend{display:flex;gap:14px;margin-top:12px;font-family:var(--mono);font-size:11.5px;flex-wrap:wrap}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-  .legend .c i{background:var(--pine)} .legend .r i{background:var(--ruben)}
+  .legend .c i{background:var(--pine)} .legend .r i{background:var(--ruben)} .legend .s i{background:var(--spot)}
 
-  nav{position:sticky;top:0;z-index:10;background:var(--paper);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:6px}
+  nav{position:sticky;top:0;z-index:10;background:var(--paper);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:5px}
   nav a{flex:1;text-align:center;text-decoration:none;font-family:var(--disp);font-weight:600;font-size:15px;text-transform:uppercase;color:var(--ink);padding:7px 0;border:1px solid var(--line);border-radius:4px;background:var(--card);position:relative}
   nav a.lift::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--pine)}
   nav a.today{background:var(--marker);border-color:var(--ink);font-weight:700}
   nav a:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
 
-  .day{background:var(--card);border:1px solid var(--line);border-radius:6px;margin-top:22px;overflow:hidden;scroll-margin-top:64px}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:6px;margin-top:20px;overflow:hidden;scroll-margin-top:64px}
   .day.lift{border-left:5px solid var(--pine)}
-  .day.rest{border-left:5px solid var(--line)}
+  .day.solo{border-left:5px solid #9aa8a0}
   .day.today-card{box-shadow:0 0 0 2px var(--ink)}
   .day-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--pine-tint)}
-  .day.rest .day-head{background:#f0f2ee}
+  .day.solo .day-head{background:#f0f2ee}
   .day.today-card .day-head{background:var(--marker-soft)}
-  .day-head h2{font-family:var(--disp);font-weight:700;font-size:24px;text-transform:uppercase}
+  .day-head h2{font-family:var(--disp);font-weight:700;font-size:23px;text-transform:uppercase}
   .today-flag{display:none;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:var(--marker);border:1px solid var(--ink);padding:2px 8px;border-radius:3px}
   .day.today-card .today-flag{display:inline-block}
-
   .sub{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);padding:10px 14px 4px}
 
-  /* exercise blocks: both lifters */
-  .ex{padding:10px 14px;border-bottom:1px dashed var(--line)}
-  .ex .name{font-weight:600;font-size:15.5px}
+  .ex{padding:12px 14px;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:start}
+  .ex:last-child{border-bottom:none}
+  .ex .dia{width:112px;height:112px;background:#fbfcfa;border:1px solid var(--line);border-radius:5px}
+  .ex .body .name{font-weight:600;font-size:15.5px}
   .ex .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
   .who{border-radius:4px;padding:6px 9px;font-size:13.5px}
   .who .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;display:block;margin-bottom:2px}
@@ -76,20 +66,13 @@
   .who.duty{background:var(--spot-tint);border-left:3px solid var(--spot)}
   .who.duty .tag{color:var(--spot)}
   .who .rx{font-family:var(--mono);font-size:12.5px;display:block;margin-top:1px}
-  .ex .cue{font-size:12.5px;color:var(--ink-soft);margin-top:5px}
+  .cue{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .cue b{color:var(--spot)}
 
-  /* meals */
-  .meals{border-top:2px solid var(--line)}
-  .feed{display:grid;grid-template-columns:60px 1fr auto;gap:10px;padding:8px 14px;border-bottom:1px dashed var(--line);align-items:baseline}
-  .feed .t{font-family:var(--mono);font-size:12px;color:var(--pine)}
-  .feed .m{font-size:14px}
-  .feed .kcal{font-family:var(--mono);font-size:12px;color:var(--ink-soft);white-space:nowrap}
-  .ruben-plate{padding:8px 14px;font-size:13px;color:var(--ruben);background:var(--ruben-tint);border-bottom:1px dashed var(--line)}
-  .day-total{display:flex;justify-content:space-between;padding:9px 14px;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12.5px}
-  .day-total b{color:var(--marker);font-weight:500}
+  .cardio{padding:12px 14px;font-size:14px;background:#f4f6f2;border-bottom:1px dashed var(--line)}
+  .cardio b{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pine);display:block;margin-bottom:3px}
 
-  /* rules */
-  section.rules-sec{margin-top:36px}
+  section.rules-sec{margin-top:34px}
   .sec-head{border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:14px}
   .sec-head h2{font-family:var(--disp);font-weight:700;font-size:26px;text-transform:uppercase}
   .rules{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden}
@@ -99,34 +82,46 @@
   .rule dd{font-size:14.5px}
   .rule dd b{background:var(--marker-soft);padding:0 3px}
 
-  footer{margin-top:40px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  footer{margin-top:36px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 
-  @media (max-width:540px){
+  @media (max-width:600px){
+    .ex{grid-template-columns:84px 1fr;gap:10px}
+    .ex .dia{width:84px;height:84px}
     .ex .pair{grid-template-columns:1fr}
     .rule{grid-template-columns:1fr}
-    .feed{grid-template-columns:52px 1fr}
-    .feed .kcal{grid-column:2}
   }
   @media print{nav{display:none}.day{break-inside:avoid}body{background:#fff}}
+
+  /* diagram styling */
+  .dia .fig{fill:none;stroke:var(--pine-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .dia .head{fill:var(--pine-deep);stroke:none}
+  .dia .eq{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round}
+  .dia .eqf{fill:var(--ink);stroke:none}
+  .dia .arrow{fill:none;stroke:var(--spot);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .dia .ah{fill:var(--spot);stroke:none}
+  .dia .ghost{fill:none;stroke:#b9c4bc;stroke-width:2.5;stroke-dasharray:4 4;stroke-linecap:round}
+  .dia .bench{fill:#dfe6e0;stroke:var(--ink-soft);stroke-width:2}
+  .dia .floor{stroke:var(--line);stroke-width:2}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">The Cates Program · Daily · Two Lifters</div>
+  <div class="eyebrow">The Cates Program · Training Schedule</div>
   <h1>Every Day, Both of Us</h1>
-  <p class="role">Mr. Cates: fat loss with muscle retention — 5 g creatine daily, sets stop 1–2 reps shy of failure. Ruben: muscle building in a surplus — progressive overload, +5 lb/week cap on squat and deadlift.</p>
+  <p class="role">Mr. Cates: fat loss with muscle retention — 5 g creatine daily, every set stops 1–2 reps shy of failure. Ruben: muscle building in a surplus — 5 g creatine daily, progressive overload, +5 lb/week cap on squat and deadlift. Shared gym days Tue/Thu/Sat. Solo cardio and chest work Mon/Wed/Fri/Sun.</p>
   <div class="targets">
-    <span>CATES KCAL <b>TRAIN 2,250 / REST 2,100</b></span>
-    <span>CATES PROTEIN <b>150–170 g</b></span>
-    <span>RUBEN KCAL <b>2,500–2,800</b></span>
-    <span>CREATINE <b>5 g / day</b></span>
-    <span>WATER <b>70–90 oz</b></span>
+    <span>REPS <b>3 × 10–12 standard</b></span>
+    <span>DEADLIFT <b>3 × 5–6 always</b></span>
+    <span>REST <b>90 sec · 2–3 min big lifts</b></span>
+    <span>CREATINE <b>5 g / day — both</b></span>
+    <span>REVIEW <b>Monday</b></span>
   </div>
   <div class="legend">
     <span class="c"><i></i>Mr. Cates</span>
     <span class="r"><i></i>Ruben</span>
+    <span class="s"><i></i>Spot duty — no lifting</span>
   </div>
 </header>
 
@@ -140,310 +135,790 @@
   <a href="#sun" data-day="0">Sun</a>
 </nav>
 
-<!-- ================= MONDAY ================= -->
-<article class="day rest" id="mon" data-day="1">
-  <div class="day-head"><h2>Monday — Rest</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Training</div>
+<!-- ========== MONDAY ========== -->
+<article class="day solo" id="mon" data-day="1">
+  <div class="day-head"><h2>Monday — Review + Solo</h2><span class="today-flag">Today</span></div>
+  <div class="cardio"><b>Weekly Review — first thing</b>Weight trend (ignore daily noise until week 3), waist at navel with soft tape, calibration numbers for both lifters. Full week through Sunday now logged. 3+ reps in the tank on any final set → up one increment this week: barbells +5 lbs, dumbbells one increment, machines one plate. Squat and deadlift never more than +5 lbs/week. Two consecutive Mondays with dropping reps → rest-day calories return to 2,200.</div>
+  <div class="cardio"><b>Cardio</b>Elliptical 25 min, easy pace.</div>
+  <div class="sub">Solo work — Mr. Cates only</div>
+
   <div class="ex">
-    <div class="pair">
-      <div class="who cates"><span class="tag">MR. CATES</span>Rest or elliptical 25 min<span class="rx">easy pace · optional</span></div>
-      <div class="who ruben"><span class="tag">RUBEN</span>Rest — school day<span class="rx">no session</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell bench press: lying on bench pressing two dumbbells upward">
+      <line class="floor" x1="8" y1="88" x2="92" y2="88"/>
+      <rect class="bench" x="22" y="60" width="56" height="9" rx="2"/>
+      <line class="eq" x1="30" y1="69" x2="30" y2="88"/><line class="eq" x1="70" y1="69" x2="70" y2="88"/>
+      <circle class="head" cx="30" cy="53" r="6"/>
+      <path class="fig" d="M36 56 L64 56"/>
+      <path class="fig" d="M64 56 L74 68 M64 56 L74 78"/>
+      <path class="fig" d="M44 55 L44 34 M56 55 L56 34"/>
+      <line class="eq" x1="34" y1="30" x2="54" y2="30"/>
+      <line class="eq" x1="46" y1="30" x2="66" y2="30"/>
+      <circle class="eqf" cx="34" cy="30" r="4"/><circle class="eqf" cx="54" cy="30" r="4"/>
+      <circle class="eqf" cx="46" cy="30" r="4"/><circle class="eqf" cx="66" cy="30" r="4"/>
+      <path class="arrow" d="M84 44 L84 24"/><path class="ah" d="M84 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dumbbell Bench Press</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">35 lb per hand · lighter than Tuesday by design</span></div>
+      </div>
+      <div class="cue">Lie flat, dumbbells at chest level, press to arms extended. Lighter than your Tuesday session — this is supplementary volume, not a second max effort day. Do this <b>before</b> the elliptical so strength isn't blunted.</div>
     </div>
   </div>
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">200g Greek yogurt, 50g berries (granola dropped)</span><span class="kcal">225 / 21g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">4 turkey meatballs 200g, 200g roasted veg, 200g baked potato, 60g tzatziki</span><span class="kcal">755 / 55g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami chocolate pint</span><span class="kcal">180 / 30g</span></div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>REST DAY: 2,100 target / ~146g protein</b></span></div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Cable crossover: standing between two high pulleys, arms arcing down and together">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="12" x2="12" y2="90"/><line class="eq" x1="88" y1="12" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="14" r="3.5"/><circle class="eqf" cx="88" cy="14" r="3.5"/>
+      <path class="ghost" d="M12 16 L36 40"/><path class="ghost" d="M88 16 L64 40"/>
+      <path class="eq" d="M12 16 L38 58"/><path class="eq" d="M88 16 L62 58"/>
+      <circle class="head" cx="50" cy="26" r="6.5"/>
+      <path class="fig" d="M50 33 L50 62"/>
+      <path class="fig" d="M50 40 L38 58 M50 40 L62 58"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M36 46 Q42 58 48 62"/><path class="ah" d="M50 64 l-6 -3 v6 z"/>
+      <path class="arrow" d="M64 46 Q58 58 52 62"/><path class="ah" d="M50 64 l6 -3 v6 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Cable Crossover</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">pin 8 · warm-up weight, squeeze focus</span></div>
+      </div>
+      <div class="cue">High pulleys, one handle per hand, step forward. Arc down and together until hands meet at hip height, hold the squeeze a beat, control the return. Pin 8 is deliberately light — this is quality work, not load.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= TUESDAY ================= -->
+<!-- ========== TUESDAY — PUSH ========== -->
 <article class="day lift" id="tue" data-day="2">
   <div class="day-head"><h2>Tuesday — Push</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Session ~75 min · 90 sec rest all exercises · 3 × 10–12 standard</div>
+  <div class="sub">With Ruben · ~75 min · 90 sec rest · 2–3 min after bench</div>
 
   <div class="ex">
-    <div class="name">Barbell Bench Press</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">start 80 lbs (bar + 15s + 2.5s) · working range 90–110</span></div>
-      <div class="who duty"><span class="tag">MR. CATES — SPOT</span>Guide unrack, hands ready every set<span class="rx">no lifting</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Barbell bench press: lifter lying on bench, spotter standing at head of bench">
+      <line class="floor" x1="6" y1="90" x2="94" y2="90"/>
+      <rect class="bench" x="24" y="62" width="54" height="9" rx="2"/>
+      <line class="eq" x1="32" y1="71" x2="32" y2="90"/><line class="eq" x1="70" y1="71" x2="70" y2="90"/>
+      <circle class="head" cx="34" cy="55" r="6"/>
+      <path class="fig" d="M40 58 L66 58 M66 58 L76 70 M66 58 L76 80"/>
+      <path class="fig" d="M46 57 L46 38 M58 57 L58 38"/>
+      <line class="eq" x1="30" y1="34" x2="74" y2="34"/>
+      <rect class="eqf" x="28" y="27" width="4" height="14" rx="1"/>
+      <rect class="eqf" x="72" y="27" width="4" height="14" rx="1"/>
+      <circle class="head" cx="16" cy="40" r="5" style="fill:var(--spot)"/>
+      <path class="fig" d="M16 45 L16 66 M16 66 L11 84 M16 66 L21 84" style="stroke:var(--spot)"/>
+      <path class="fig" d="M16 50 L28 38" style="stroke:var(--spot)"/>
+      <text x="50" y="98" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">SPOT</text>
+    </svg>
+    <div class="body">
+      <div class="name">Barbell Bench Press</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">80 lbs start · working 90–110</span></div>
+        <div class="who duty"><span class="tag">MR. CATES — SPOT</span>Every set<span class="rx">guide unrack · hands ready · no lifting</span></div>
+      </div>
+      <div class="cue">Stand at the head of the bench, hands hovering under the bar. Guide the unrack, stay close through all reps, guide the re-rack. <b>Confirm the weight aloud before every set</b> — Ruben can't plate-check visually.</div>
     </div>
-  </div>
-  <div class="ex">
-    <div class="name">Dumbbell Bench Press</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">barbell covers it · same session</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">40 lb per hand · adjacent bench after spot duty</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Incline Dumbbell Press</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · alternate, same bench</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Seated DB Shoulder Press</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · ribs down, no arch</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Lateral Raises</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">10 lb · stays light by design</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">10 lb · can run simultaneous</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Triceps Pushdown (cable)</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 45</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 45 · shared cable, move pin</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Dips / Push-ups</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">assisted dips or push-ups · bodyweight</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">push-ups · bodyweight · or skip</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Cable Crossover</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 20 each side · arc down, hands meet at hip height</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 20 each side · squeeze at centre, control the return</span></div>
-    </div>
-    <div class="cue">High pulleys, one handle each hand. Step forward, arc down and together until hands meet at hip height. The squeeze at the bottom is the rep — hold it a beat. If you can't feel the chest working, drop the pin; this is isolation, not load.</div>
   </div>
 
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">Apple + 28g mixed nuts</span><span class="kcal">270 / 6g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">225g chicken breast, 200g cooked rice, salad + 20g preserved lemon vinaigrette</span><span class="kcal">800 / 62g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami butterscotch pint</span><span class="kcal">180 / 35g</span></div>
-    <div class="ruben-plate">Ruben: same food, bigger plate — he's eating 2,500–2,800 to gain. His portions don't get weighed; yours do.</div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>~2,250 kcal / 148g protein</b></span></div>
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell bench press: lying flat pressing two dumbbells">
+      <line class="floor" x1="8" y1="88" x2="92" y2="88"/>
+      <rect class="bench" x="22" y="60" width="56" height="9" rx="2"/>
+      <line class="eq" x1="30" y1="69" x2="30" y2="88"/><line class="eq" x1="70" y1="69" x2="70" y2="88"/>
+      <circle class="head" cx="30" cy="53" r="6"/>
+      <path class="fig" d="M36 56 L64 56 M64 56 L74 68 M64 56 L74 78"/>
+      <path class="fig" d="M44 55 L44 34 M56 55 L56 34"/>
+      <line class="eq" x1="34" y1="30" x2="54" y2="30"/><line class="eq" x1="46" y1="30" x2="66" y2="30"/>
+      <circle class="eqf" cx="34" cy="30" r="4"/><circle class="eqf" cx="54" cy="30" r="4"/>
+      <circle class="eqf" cx="46" cy="30" r="4"/><circle class="eqf" cx="66" cy="30" r="4"/>
+      <path class="arrow" d="M84 44 L84 24"/><path class="ah" d="M84 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dumbbell Bench Press</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>—<span class="rx">barbell covers this</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">40 lb per hand · adjacent bench</span></div>
+      </div>
+      <div class="cue">Adjacent bench, run your sets during Ruben's rest periods. Dumbbells start at chest level, press to arms extended, lower with control.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Incline dumbbell press: bench angled up, pressing dumbbells overhead">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <path class="bench" d="M26 78 L64 44 L70 51 L32 85 Z"/>
+      <line class="eq" x1="34" y1="82" x2="34" y2="90"/><line class="eq" x1="62" y1="56" x2="62" y2="90"/>
+      <circle class="head" cx="62" cy="38" r="6"/>
+      <path class="fig" d="M58 43 L38 62 M38 62 L30 80"/>
+      <path class="fig" d="M60 44 L48 30 M66 47 L56 32"/>
+      <line class="eq" x1="40" y1="26" x2="58" y2="26"/><line class="eq" x1="48" y1="28" x2="66" y2="28"/>
+      <circle class="eqf" cx="40" cy="26" r="3.5"/><circle class="eqf" cx="58" cy="26" r="3.5"/>
+      <circle class="eqf" cx="48" cy="28" r="3.5"/><circle class="eqf" cx="66" cy="28" r="3.5"/>
+      <path class="arrow" d="M80 46 L80 26"/><path class="ah" d="M80 20 l-4 8 h8 z"/>
+      <text x="22" y="40" style="font:600 9px sans-serif;fill:var(--ink-soft)">30°</text>
+    </svg>
+    <div class="body">
+      <div class="name">Incline Dumbbell Press</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · alternate, same bench</span></div>
+      </div>
+      <div class="cue">Bench set to about 30 degrees — shifts the work to the upper chest. You and Ruben alternate turns on the same bench, just swap dumbbells.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Seated dumbbell shoulder press: seated upright pressing dumbbells overhead">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <rect class="bench" x="36" y="62" width="30" height="8" rx="2"/>
+      <rect class="bench" x="60" y="34" width="7" height="30" rx="2"/>
+      <line class="eq" x1="42" y1="70" x2="42" y2="90"/><line class="eq" x1="60" y1="70" x2="60" y2="90"/>
+      <circle class="head" cx="50" cy="34" r="6.5"/>
+      <path class="fig" d="M50 41 L50 62"/>
+      <path class="fig" d="M50 46 L38 40 L38 26 M50 46 L62 40 L62 26"/>
+      <path class="fig" d="M50 62 L36 74 M36 74 L36 88"/>
+      <line class="eq" x1="30" y1="22" x2="46" y2="22"/><line class="eq" x1="54" y1="22" x2="70" y2="22"/>
+      <circle class="eqf" cx="30" cy="22" r="3.5"/><circle class="eqf" cx="46" cy="22" r="3.5"/>
+      <circle class="eqf" cx="54" cy="22" r="3.5"/><circle class="eqf" cx="70" cy="22" r="3.5"/>
+      <path class="arrow" d="M82 42 L82 24"/><path class="ah" d="M82 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Seated DB Shoulder Press</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · ribs down, no arch</span></div>
+      </div>
+      <div class="cue">Seated upright with back support. <b>Mr. Cates:</b> your dancer mobility will let the spine arch to finish a rep — that's flexibility doing the shoulders' job. Keep the ribcage stacked over the pelvis.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Lateral raise: standing, arms raising out to the sides to shoulder height">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <circle class="head" cx="50" cy="24" r="6.5"/>
+      <path class="fig" d="M50 31 L50 60"/>
+      <path class="fig" d="M50 60 L42 90 M50 60 L58 90"/>
+      <path class="ghost" d="M50 38 L44 60 M50 38 L56 60"/>
+      <path class="fig" d="M50 38 L28 40 M50 38 L72 40"/>
+      <line class="eq" x1="22" y1="34" x2="22" y2="46"/><line class="eq" x1="78" y1="34" x2="78" y2="46"/>
+      <circle class="eqf" cx="22" cy="34" r="3.5"/><circle class="eqf" cx="22" cy="46" r="3.5"/>
+      <circle class="eqf" cx="78" cy="34" r="3.5"/><circle class="eqf" cx="78" cy="46" r="3.5"/>
+      <path class="arrow" d="M34 58 Q28 48 24 42"/><path class="ah" d="M22 38 l-1 7 6 -3 z"/>
+      <path class="arrow" d="M66 58 Q72 48 76 42"/><path class="ah" d="M78 38 l1 7 -6 -3 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Lateral Raises</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">10 lb · light by design</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">10 lb · can run simultaneous</span></div>
+      </div>
+      <div class="cue">Arms at your sides, raise out to shoulder height, lower with control. Light on purpose — the side delt is a small muscle and heaving turns this into a shrug. This weight may never change, and that's correct.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Triceps pushdown: standing at cable, elbows pinned, pushing bar down">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="80" y1="10" x2="80" y2="90"/>
+      <circle class="eqf" cx="80" cy="12" r="3.5"/>
+      <path class="eq" d="M80 14 L58 40"/>
+      <line class="eq" x1="48" y1="58" x2="68" y2="58"/>
+      <circle class="head" cx="40" cy="26" r="6.5"/>
+      <path class="fig" d="M40 33 L40 62 M40 62 L33 90 M40 62 L47 90"/>
+      <path class="ghost" d="M40 40 L54 34 L58 42"/>
+      <path class="fig" d="M40 40 L46 52 L56 58"/>
+      <path class="arrow" d="M64 40 L64 54"/><path class="ah" d="M64 58 l-4 -8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Triceps Pushdown</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 45</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 45 · shared cable, move pin</span></div>
+      </div>
+      <div class="cue">Elbows pinned to your sides — they don't move. Only the forearms travel, from chest height down to full extension. Same pin for both of you, so the pin doesn't even move between turns.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Push-ups: body in plank position lowering to the floor">
+      <line class="floor" x1="6" y1="86" x2="94" y2="86"/>
+      <circle class="head" cx="24" cy="46" r="6.5"/>
+      <path class="fig" d="M30 50 L74 62"/>
+      <path class="fig" d="M30 50 L28 84 M32 52 L36 84"/>
+      <path class="fig" d="M74 62 L86 84"/>
+      <path class="ghost" d="M30 58 L74 70"/>
+      <path class="arrow" d="M52 44 L52 32"/><path class="ah" d="M52 28 l-4 8 h8 z"/>
+      <path class="arrow" d="M52 74 L52 80"/><path class="ah" d="M52 84 l-4 -8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dips / Push-ups</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">assisted dips or push-ups</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">push-ups · bodyweight · or skip</span></div>
+      </div>
+      <div class="cue">Optional finisher. If the session ran long or you're spent from spotting duty, skipping costs nothing.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Cable crossover: standing between high pulleys, arms arcing down and together">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="12" x2="12" y2="90"/><line class="eq" x1="88" y1="12" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="14" r="3.5"/><circle class="eqf" cx="88" cy="14" r="3.5"/>
+      <path class="ghost" d="M12 16 L34 38"/><path class="ghost" d="M88 16 L66 38"/>
+      <path class="eq" d="M12 16 L40 60"/><path class="eq" d="M88 16 L60 60"/>
+      <circle class="head" cx="50" cy="26" r="6.5"/>
+      <path class="fig" d="M50 33 L50 62"/>
+      <path class="fig" d="M50 40 L40 60 M50 40 L60 60"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M34 44 Q42 58 48 62"/><path class="ah" d="M50 64 l-6 -3 v6 z"/>
+      <path class="arrow" d="M66 44 Q58 58 52 62"/><path class="ah" d="M50 64 l6 -3 v6 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Cable Crossover</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 20 each side</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 20 each side · squeeze at centre</span></div>
+      </div>
+      <div class="cue">Arc down and together until hands meet at hip height. <b>The squeeze at the bottom is the rep</b> — hold a beat before the return. If you can't feel the chest working, the weight is too high; drop the pin.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Rear delt cable fly: facing the stack, pulling handles out and back at shoulder height">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="26" x2="12" y2="90"/><line class="eq" x1="88" y1="26" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="28" r="3.5"/><circle class="eqf" cx="88" cy="28" r="3.5"/>
+      <path class="ghost" d="M12 28 L46 40"/><path class="ghost" d="M88 28 L54 40"/>
+      <path class="eq" d="M12 28 L30 38"/><path class="eq" d="M88 28 L70 38"/>
+      <circle class="head" cx="50" cy="24" r="6.5"/>
+      <path class="fig" d="M50 31 L50 62"/>
+      <path class="fig" d="M50 38 L38 34 L30 38 M50 38 L62 34 L70 38"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M42 48 L28 46"/><path class="ah" d="M24 45 l8 -4 v8 z"/>
+      <path class="arrow" d="M58 48 L72 46"/><path class="ah" d="M76 45 l-8 -4 v8 z"/>
+      <text x="50" y="80" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">ELBOWS LEAD</text>
+    </svg>
+    <div class="body">
+      <div class="name">Rear Delt Cable Fly</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 10 each side</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 10 each side · keep it light</span></div>
+      </div>
+      <div class="cue">Same station as crossover — turn to face the stack, handles stay put. Pull out and back at shoulder height, <b>elbows leading</b>, not hands pulling sideways. Think: show your elbows to the wall behind you. This is the antidote to all your pressing volume — never load it heavily.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= WEDNESDAY ================= -->
-<article class="day rest" id="wed" data-day="3">
-  <div class="day-head"><h2>Wednesday — Rest</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Training</div>
+<!-- ========== WEDNESDAY ========== -->
+<article class="day solo" id="wed" data-day="3">
+  <div class="day-head"><h2>Wednesday — Solo</h2><span class="today-flag">Today</span></div>
+  <div class="cardio"><b>Cardio</b>Elliptical 25 min, easy pace. Lift first, cardio after.</div>
+  <div class="sub">Solo work — Mr. Cates only</div>
+
   <div class="ex">
-    <div class="pair">
-      <div class="who cates"><span class="tag">MR. CATES</span>Rest or elliptical 25 min<span class="rx">optional</span></div>
-      <div class="who ruben"><span class="tag">RUBEN</span>Rest — school day<span class="rx">no session</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell bench press: lying on bench pressing two dumbbells upward">
+      <line class="floor" x1="8" y1="88" x2="92" y2="88"/>
+      <rect class="bench" x="22" y="60" width="56" height="9" rx="2"/>
+      <line class="eq" x1="30" y1="69" x2="30" y2="88"/><line class="eq" x1="70" y1="69" x2="70" y2="88"/>
+      <circle class="head" cx="30" cy="53" r="6"/>
+      <path class="fig" d="M36 56 L64 56 M64 56 L74 68 M64 56 L74 78"/>
+      <path class="fig" d="M44 55 L44 34 M56 55 L56 34"/>
+      <line class="eq" x1="34" y1="30" x2="54" y2="30"/><line class="eq" x1="46" y1="30" x2="66" y2="30"/>
+      <circle class="eqf" cx="34" cy="30" r="4"/><circle class="eqf" cx="54" cy="30" r="4"/>
+      <circle class="eqf" cx="46" cy="30" r="4"/><circle class="eqf" cx="66" cy="30" r="4"/>
+      <path class="arrow" d="M84 44 L84 24"/><path class="ah" d="M84 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dumbbell Bench Press</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+      </div>
+      <div class="cue">Supplementary volume at a lighter load than Tuesday. Before the elliptical.</div>
     </div>
   </div>
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">150g cooked leftover meat, salad, 10g vinaigrette</span><span class="kcal">425 / 45g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">200g salmon, 200g sweet potato + 3g gochugaru oil, charred broccoli</span><span class="kcal">690 / 48g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">150g Greek yogurt + cinnamon</span><span class="kcal">130 / 15g</span></div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>REST DAY: 2,100 target / ~146g protein</b></span></div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Cable crossover: standing between two high pulleys, arms arcing down and together">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="12" x2="12" y2="90"/><line class="eq" x1="88" y1="12" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="14" r="3.5"/><circle class="eqf" cx="88" cy="14" r="3.5"/>
+      <path class="ghost" d="M12 16 L34 38"/><path class="ghost" d="M88 16 L66 38"/>
+      <path class="eq" d="M12 16 L40 60"/><path class="eq" d="M88 16 L60 60"/>
+      <circle class="head" cx="50" cy="26" r="6.5"/>
+      <path class="fig" d="M50 33 L50 62 M50 40 L40 60 M50 40 L60 60"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M34 44 Q42 58 48 62"/><path class="ah" d="M50 64 l-6 -3 v6 z"/>
+      <path class="arrow" d="M66 44 Q58 58 52 62"/><path class="ah" d="M50 64 l6 -3 v6 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Cable Crossover</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">pin 8 · squeeze focus</span></div>
+      </div>
+      <div class="cue">Light, controlled, full squeeze at the bottom of every rep.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= THURSDAY ================= -->
+<!-- ========== THURSDAY — PULL ========== -->
 <article class="day lift" id="thu" data-day="4">
   <div class="day-head"><h2>Thursday — Pull</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Session ~75 min · 90 sec rest all exercises · deadlift stays 3 × 5–6 · weight confirmed aloud before every set</div>
+  <div class="sub">With Ruben · ~75 min · 90 sec rest · 2–3 min after deadlifts</div>
 
   <div class="ex">
-    <div class="name">Deadlift</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 5–6<span class="rx">start 140 lbs (bar + 45s + 2.5s) · working range 160–190 · +5 lb/week cap</span></div>
-      <div class="who duty"><span class="tag">MR. CATES — DUTY</span>Confirm weight aloud, watch his back<span class="rx">no lifting</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Deadlift: lifter hinged at hips gripping barbell on floor, back flat, spotter watching from side">
+      <line class="floor" x1="6" y1="88" x2="94" y2="88"/>
+      <circle class="head" cx="34" cy="30" r="6.5"/>
+      <path class="fig" d="M40 34 L60 46"/>
+      <path class="fig" d="M60 46 L58 66 M58 66 L54 88"/>
+      <path class="fig" d="M46 39 L46 74"/>
+      <line class="eq" x1="30" y1="76" x2="62" y2="76"/>
+      <circle class="eqf" cx="30" cy="76" r="7"/><circle class="eqf" cx="62" cy="76" r="7"/>
+      <path class="arrow" d="M76 66 L76 44"/><path class="ah" d="M76 38 l-4 8 h8 z"/>
+      <path class="ghost" d="M40 34 Q52 30 60 46"/>
+      <text x="50" y="20" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">BACK FLAT</text>
+    </svg>
+    <div class="body">
+      <div class="name">Deadlift</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 5–6<span class="rx">140 lbs start · working 160–190 · +5 lb/wk cap</span></div>
+        <div class="who duty"><span class="tag">MR. CATES — DUTY</span>Every set<span class="rx">confirm weight aloud · watch his back · no lifting</span></div>
+      </div>
+      <div class="cue">Bar over mid-foot, hips push back, chest up, back flat. Push the floor away. <b>Deadlifts can't be hand-spotted</b> — a failing rep gets set down. Your intervention is your voice. Watch from the side for the lower back rounding, especially on the last rep. <b>Any rep that rounds ends the set.</b></div>
     </div>
-    <div class="cue">Any rep that feels wrong in the back ends the set — both lifters, no exceptions.</div>
-  </div>
-  <div class="ex">
-    <div class="name">Pull-ups / Lat Pulldown</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">try pull-ups first at 129 lbs BW · 10 clean reps = skip pulldown</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">lat pulldown, pin 95 · adjust to clean 12-rep weight</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Chest-Supported Row</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · alternate, same bench</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Face Pulls (cable)</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 30</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 30 · keep light — shoulder health</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Curls</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>Barbell curls 3 × 10–12<span class="rx">EZ bar + 10s + 2.5s (~45 lbs) · then hammer curls 3 × 10–12 @ 25 lb</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>Hammer curls 3 × 10–12<span class="rx">25 lb · then stretch while Ruben finishes</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Straight-Arm Pulldown</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 30 · elbows locked straight the entire rep</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 25 · pure lat isolation, no bicep involvement</span></div>
-    </div>
-    <div class="cue">High pulley, bar or rope. Stand facing the stack, arms extended overhead. Push the bar down in an arc to your thighs — elbows stay locked like rigid rods. The moment elbows bend, biceps take over and lats coast. Shared cable station — reset pulley to top, move the pin.</div>
   </div>
 
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">200g cottage cheese, 100g berries</span><span class="kcal">280 / 25g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">4 beef meatballs 200g, 200g pasta or potato, tomato sauce, salad</span><span class="kcal">820 / 55g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
-    <div class="ruben-plate">Ruben: same table, bigger portions — extras go on his plate.</div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>~2,250 kcal / 152g protein</b></span></div>
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Lat pulldown: seated pulling wide bar down to upper chest">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="50" y1="8" x2="50" y2="26"/>
+      <line class="eq" x1="30" y1="26" x2="70" y2="26"/>
+      <circle class="eqf" cx="30" cy="26" r="3"/><circle class="eqf" cx="70" cy="26" r="3"/>
+      <rect class="bench" x="38" y="66" width="26" height="8" rx="2"/>
+      <rect class="bench" x="34" y="56" width="32" height="6" rx="2"/>
+      <line class="eq" x1="50" y1="74" x2="50" y2="90"/>
+      <circle class="head" cx="50" cy="34" r="6.5"/>
+      <path class="fig" d="M50 41 L50 66"/>
+      <path class="fig" d="M50 46 L36 34 M50 46 L64 34"/>
+      <path class="fig" d="M50 66 L40 74 L40 88"/>
+      <path class="ghost" d="M30 26 L36 34 M70 26 L64 34"/>
+      <path class="arrow" d="M78 34 L78 52"/><path class="ah" d="M78 56 l-4 -8 h8 z"/>
+      <text x="50" y="98" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--ink-soft)">ELBOWS TO RIBS</text>
+    </svg>
+    <div class="body">
+      <div class="name">Pull-ups / Lat Pulldown</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pull-ups first at 129 lbs BW · 10 clean = skip pulldown</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pulldown pin 95 · adjust to clean 12-rep weight</span></div>
+      </div>
+      <div class="cue">Same movement, two directions. Start each rep by pulling the shoulder blades <b>down</b> before the arms bend. Think "elbows down and back," not "hands to chin." Full stretch at the top, no bounce out of the bottom.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Chest-supported row: lying face down on incline bench, rowing dumbbells to ribs">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <path class="bench" d="M28 82 L66 46 L72 53 L34 89 Z"/>
+      <line class="eq" x1="36" y1="86" x2="36" y2="90"/><line class="eq" x1="64" y1="58" x2="64" y2="90"/>
+      <circle class="head" cx="70" cy="38" r="6"/>
+      <path class="fig" d="M66 42 L44 64"/>
+      <path class="fig" d="M44 64 L38 84"/>
+      <path class="ghost" d="M62 50 L58 74 M52 58 L48 78"/>
+      <path class="fig" d="M62 50 L66 62 M52 58 L56 70"/>
+      <line class="eq" x1="60" y1="66" x2="72" y2="60"/>
+      <line class="eq" x1="50" y1="74" x2="62" y2="68"/>
+      <circle class="eqf" cx="60" cy="66" r="3.5"/><circle class="eqf" cx="72" cy="60" r="3.5"/>
+      <circle class="eqf" cx="50" cy="74" r="3.5"/><circle class="eqf" cx="62" cy="68" r="3.5"/>
+      <path class="arrow" d="M24 62 L24 48"/><path class="ah" d="M24 42 l-4 8 h8 z"/>
+      <text x="22" y="76" style="font:600 8px sans-serif;fill:var(--spot)">CHEST STAYS</text>
+    </svg>
+    <div class="body">
+      <div class="name">Chest-Supported Row</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb per hand · alternate, same bench</span></div>
+      </div>
+      <div class="cue">Bench at 30–45°, lie face down, chest on the pad, dumbbells hanging. Row to your lower ribs, squeeze the shoulder blades, lower slowly. <b>Keep the chest glued to the pad</b> — peeling up to heave the weight reintroduces exactly the back involvement this exercise removes. If the chest lifts, the weight is too heavy.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Face pull: standing at high cable, pulling rope toward the face with elbows high">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="84" y1="10" x2="84" y2="90"/>
+      <circle class="eqf" cx="84" cy="12" r="3.5"/>
+      <path class="eq" d="M84 14 L62 30"/>
+      <path class="eq" d="M62 30 L52 24 M62 30 L52 36"/>
+      <circle class="head" cx="38" cy="30" r="6.5"/>
+      <path class="fig" d="M38 37 L38 64 M38 64 L31 90 M38 64 L45 90"/>
+      <path class="ghost" d="M38 42 L58 32 M38 42 L58 38"/>
+      <path class="fig" d="M38 42 L28 24 L52 24 M38 42 L28 40 L52 36"/>
+      <path class="arrow" d="M56 44 L38 48"/><path class="ah" d="M34 49 l8 -4 v8 z"/>
+      <text x="42" y="16" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">ELBOWS HIGH</text>
+    </svg>
+    <div class="body">
+      <div class="name">Face Pulls</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 30</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 30 · keep light — shoulder health</span></div>
+      </div>
+      <div class="cue">High pulley, rope, palms facing each other. Pull toward the bridge of your nose, hands separating as they come, finishing with knuckles beside your ears and elbows high. <b>Never chase weight here</b> — heavy turns it into a row and bypasses the rotator cuff entirely.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Hammer curl: standing, dumbbells held with palms facing inward, curling up">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <circle class="head" cx="50" cy="24" r="6.5"/>
+      <path class="fig" d="M50 31 L50 62 M50 62 L42 90 M50 62 L58 90"/>
+      <path class="ghost" d="M50 38 L38 58 M50 38 L62 58"/>
+      <path class="fig" d="M50 38 L38 52 L44 40 M50 38 L62 52 L56 40"/>
+      <line class="eq" x1="40" y1="34" x2="48" y2="40"/>
+      <line class="eq" x1="60" y1="34" x2="52" y2="40"/>
+      <circle class="eqf" cx="40" cy="34" r="3.5"/><circle class="eqf" cx="48" cy="40" r="3.5"/>
+      <circle class="eqf" cx="60" cy="34" r="3.5"/><circle class="eqf" cx="52" cy="40" r="3.5"/>
+      <path class="arrow" d="M30 58 L30 42"/><path class="ah" d="M30 38 l-4 8 h8 z"/>
+      <text x="50" y="80" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--ink-soft)">PALMS FACE IN</text>
+    </svg>
+    <div class="body">
+      <div class="name">Curls</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12 barbell<span class="rx">EZ bar ~45 lbs · then hammer 3 × 10–12 @ 25 lb</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>Hammer 3 × 10–12<span class="rx">25 lb · then stretch while Ruben finishes</span></div>
+      </div>
+      <div class="cue">Hammer grip means palms facing each other throughout — like holding two hammers. Elbows stay at your sides; no swinging the torso to start the rep.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Straight-arm pulldown: standing facing cable, arms locked straight pushing bar down in an arc">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="82" y1="8" x2="82" y2="90"/>
+      <circle class="eqf" cx="82" cy="10" r="3.5"/>
+      <path class="eq" d="M82 12 L60 24"/>
+      <line class="eq" x1="52" y1="60" x2="70" y2="60"/>
+      <circle class="head" cx="38" cy="28" r="6.5"/>
+      <path class="fig" d="M38 35 L38 64 M38 64 L31 90 M38 64 L45 90"/>
+      <path class="ghost" d="M38 42 L60 24"/>
+      <path class="fig" d="M38 42 L60 60"/>
+      <path class="arrow" d="M68 30 Q74 46 68 56"/><path class="ah" d="M66 60 l6 -5 -6 -2 z"/>
+      <text x="46" y="16" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">ELBOWS LOCKED</text>
+    </svg>
+    <div class="body">
+      <div class="name">Straight-Arm Pulldown</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 30</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 25 · pure lat, no bicep</span></div>
+      </div>
+      <div class="cue">Stand facing the stack, arms extended overhead, push the bar down in a wide arc to your thighs. <b>Elbows stay locked like rigid rods</b> — the moment they bend, the biceps take over and the lats coast. This one teaches you what the lat actually feels like.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Hanging knee raise: hanging from a bar drawing knees up toward the chest">
+      <line class="eq" x1="14" y1="14" x2="86" y2="14"/>
+      <line class="floor" x1="8" y1="92" x2="92" y2="92"/>
+      <path class="fig" d="M42 16 L44 30 M58 16 L56 30"/>
+      <circle class="head" cx="50" cy="34" r="6.5"/>
+      <path class="fig" d="M50 41 L50 62"/>
+      <path class="ghost" d="M50 62 L46 90 M50 62 L54 90"/>
+      <path class="fig" d="M50 62 L64 54 L60 40"/>
+      <path class="fig" d="M50 62 L66 60 L64 46"/>
+      <path class="arrow" d="M40 78 Q52 74 60 62"/><path class="ah" d="M63 58 l-2 8 6 -3 z"/>
+      <text x="50" y="86" text-anchor="middle" style="font:600 8px sans-serif;fill:var(--spot)">NO SWINGING</text>
+    </svg>
+    <div class="body">
+      <div class="name">Core — Hanging Knee Raise / Cable Crunch</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>Hanging knee raise 3 × 12–15<span class="rx">bodyweight · same bar as pull-ups</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>Cable crunch 3 × 12–15<span class="rx">pin 30 · kneeling, rope at head</span></div>
+      </div>
+      <div class="cue"><b>Ruben:</b> hang from the pull-up bar, draw knees to chest, lower with control. If the body starts to pendulum, pause at the bottom until it stops. Nothing to navigate — just the bar he already knows. <b>Mr. Cates:</b> kneel facing the stack, rope behind your head, hands fixed at your head — only the abs curl the torso down. If elbows travel forward independently, the arms are doing the work.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= FRIDAY ================= -->
-<article class="day rest" id="fri" data-day="5">
-  <div class="day-head"><h2>Friday — Rest</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Training</div>
+<!-- ========== FRIDAY ========== -->
+<article class="day solo" id="fri" data-day="5">
+  <div class="day-head"><h2>Friday — Solo</h2><span class="today-flag">Today</span></div>
+  <div class="cardio"><b>Cardio</b>Elliptical 25 min, easy pace. Lift first, cardio after.</div>
+  <div class="sub">Solo work — Mr. Cates only</div>
+
   <div class="ex">
-    <div class="pair">
-      <div class="who cates"><span class="tag">MR. CATES</span>Rest or elliptical 25 min<span class="rx">optional</span></div>
-      <div class="who ruben"><span class="tag">RUBEN</span>Rest<span class="rx">no session</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell bench press: lying on bench pressing two dumbbells upward">
+      <line class="floor" x1="8" y1="88" x2="92" y2="88"/>
+      <rect class="bench" x="22" y="60" width="56" height="9" rx="2"/>
+      <line class="eq" x1="30" y1="69" x2="30" y2="88"/><line class="eq" x1="70" y1="69" x2="70" y2="88"/>
+      <circle class="head" cx="30" cy="53" r="6"/>
+      <path class="fig" d="M36 56 L64 56 M64 56 L74 68 M64 56 L74 78"/>
+      <path class="fig" d="M44 55 L44 34 M56 55 L56 34"/>
+      <line class="eq" x1="34" y1="30" x2="54" y2="30"/><line class="eq" x1="46" y1="30" x2="66" y2="30"/>
+      <circle class="eqf" cx="34" cy="30" r="4"/><circle class="eqf" cx="54" cy="30" r="4"/>
+      <circle class="eqf" cx="46" cy="30" r="4"/><circle class="eqf" cx="66" cy="30" r="4"/>
+      <path class="arrow" d="M84 44 L84 24"/><path class="ah" d="M84 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dumbbell Bench Press</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+      </div>
+      <div class="cue">Supplementary volume. Before the elliptical.</div>
     </div>
   </div>
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">2 eggs + 100g egg whites (toast dropped)</span><span class="kcal">270 / 29g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">Steak Dinner Template: 170g cooked ribeye, torn sweet potatoes trimmed ~70 kcal on the scale, greens, yogurt sauce</span><span class="kcal">790 / 55g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">150g Greek yogurt</span><span class="kcal">130 / 15g</span></div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>REST DAY: 2,100 target / ~142g protein</b></span></div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Cable crossover: standing between two high pulleys, arms arcing down and together">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="12" x2="12" y2="90"/><line class="eq" x1="88" y1="12" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="14" r="3.5"/><circle class="eqf" cx="88" cy="14" r="3.5"/>
+      <path class="ghost" d="M12 16 L34 38"/><path class="ghost" d="M88 16 L66 38"/>
+      <path class="eq" d="M12 16 L40 60"/><path class="eq" d="M88 16 L60 60"/>
+      <circle class="head" cx="50" cy="26" r="6.5"/>
+      <path class="fig" d="M50 33 L50 62 M50 40 L40 60 M50 40 L60 60"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M34 44 Q42 58 48 62"/><path class="ah" d="M50 64 l-6 -3 v6 z"/>
+      <path class="arrow" d="M66 44 Q58 58 52 62"/><path class="ah" d="M50 64 l6 -3 v6 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Cable Crossover</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">pin 8 · squeeze focus</span></div>
+      </div>
+      <div class="cue">Light, controlled, full squeeze at the bottom of every rep.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= SATURDAY ================= -->
+<!-- ========== SATURDAY — LEGS ========== -->
 <article class="day lift" id="sat" data-day="6">
   <div class="day-head"><h2>Saturday — Legs</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Session ~75 min · 90 sec rest all exercises · safety bars set before every squat set</div>
+  <div class="sub">With Ruben · ~75 min · 90 sec rest · 2–3 min after squats</div>
 
   <div class="ex">
-    <div class="name">Barbell Back Squat</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">start 80 lbs · working range 100–130 · +5 lb/week cap</span></div>
-      <div class="who duty"><span class="tag">MR. CATES — DUTY</span>Set safety bars, guide re-rack<span class="rx">no lifting</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Romanian Deadlift</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">barbell 80 lbs</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">35 lb per hand DB · HARD STOP mid-shin — hypermobility rule</span></div>
-    </div>
-    <div class="cue">Mr. Cates: your flexibility will let you go where your connective tissue shouldn't under load. Mid-shin is the floor.</div>
-  </div>
-  <div class="ex">
-    <div class="name">Leg Press</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 95 (calibration — adjust to hard-but-clean)</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 115 · shared machine, move pin</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Leg Curls</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 45 (calibration)</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 55</span></div>
-    </div>
-  </div>
-  <div class="ex">
-    <div class="name">Bulgarian Split Squat</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12 per leg<span class="rx">bodyweight first session · 10 lb DBs once balance grooved</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12 per leg<span class="rx">bodyweight first session · 15 lb DBs once balance grooved</span></div>
-    </div>
-    <div class="cue">Rear foot on bench, front foot two steps forward. Lower back knee toward floor, front shin stays vertical, torso upright. Mr. Cates: no hypermobility risk here — bench controls rear leg, full comfortable depth is fine. Both lifters: all reps on one leg before switching. Wobble on rep one is normal — bodyweight only until the pattern is automatic.</div>
-  </div>
-  <div class="ex">
-    <div class="name">Calf Raises / Core</div>
-    <div class="pair">
-      <div class="who ruben"><span class="tag">RUBEN</span>Calves 3 × 10–12<span class="rx">pin 65 or 25 lb DBs · hanging leg raises optional</span></div>
-      <div class="who cates"><span class="tag">MR. CATES</span>Calves 3 × 10–12<span class="rx">30 lb DBs · optional</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Smith machine squat: barbell on fixed vertical rails, lifter squatting with feet forward">
+      <line class="floor" x1="6" y1="90" x2="94" y2="90"/>
+      <line class="eq" x1="22" y1="8" x2="22" y2="90"/><line class="eq" x1="78" y1="8" x2="78" y2="90"/>
+      <line class="eq" x1="22" y1="40" x2="78" y2="40"/>
+      <circle class="eqf" cx="30" cy="40" r="5"/><circle class="eqf" cx="70" cy="40" r="5"/>
+      <line class="ghost" x1="24" y1="60" x2="76" y2="60"/>
+      <circle class="head" cx="50" cy="30" r="6"/>
+      <path class="fig" d="M50 36 L52 56"/>
+      <path class="fig" d="M52 56 L60 70 L60 88"/>
+      <path class="fig" d="M50 40 L40 40"/>
+      <path class="arrow" d="M12 52 L12 68"/><path class="ah" d="M12 72 l-4 -8 h8 z"/>
+      <text x="66" y="82" style="font:600 7.5px sans-serif;fill:var(--spot)">FEET FWD</text>
+    </svg>
+    <div class="body">
+      <div class="name">Smith Machine Squat</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">80 lbs start · working 100–130 · +5 lb/wk cap</span></div>
+        <div class="who duty"><span class="tag">MR. CATES — DUTY</span>Set catches<span class="rx">confirm height aloud before every set</span></div>
+      </div>
+      <div class="cue"><b>Feet slide 6–8 inches forward</b> of where they'd be under a free barbell — the fixed vertical bar path requires this to keep shin angle right and protect the knees. The safety catches are Ruben's spotter: set them just below his bottom position, and confirm the height with him aloud before every set. The guided bar means he can find it consistently every time.</div>
     </div>
   </div>
 
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Full recovery shake + creatine</span><span class="kcal">450 / 42g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">150g cooked chicken, wrap or salad, 60g tzatziki</span><span class="kcal">450 / 45g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">Flexible dinner: ~170g protein anchor, one starch, vegetables; weigh sauces used</span><span class="kcal">800 / 55g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
-    <div class="ruben-plate">Ruben: same table, bigger portions — watch for portion drift onto your plate, especially post-workout.</div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>~2,300 kcal / 157g protein</b></span></div>
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell Romanian deadlift: hips pushed back, dumbbells lowered to mid-shin only">
+      <line class="floor" x1="6" y1="90" x2="94" y2="90"/>
+      <circle class="head" cx="40" cy="26" r="6.5"/>
+      <path class="fig" d="M44 31 L60 44"/>
+      <path class="fig" d="M60 44 L58 66 M58 66 L56 90"/>
+      <path class="fig" d="M50 37 L50 62"/>
+      <line class="eq" x1="42" y1="64" x2="58" y2="64"/>
+      <circle class="eqf" cx="42" cy="64" r="4.5"/><circle class="eqf" cx="58" cy="64" r="4.5"/>
+      <line x1="24" y1="64" x2="88" y2="64" stroke="#b3402a" stroke-width="2.5" stroke-dasharray="5 3"/>
+      <text x="86" y="60" text-anchor="end" style="font:700 8px sans-serif;fill:var(--spot)">MID-SHIN STOP</text>
+      <path class="ghost" d="M42 76 L58 76"/>
+      <path class="arrow" d="M18 48 Q14 58 18 62"/><path class="ah" d="M20 66 l-1 -8 -5 5 z"/>
+      <line x1="30" y1="80" x2="70" y2="80" stroke="#d8dedb" stroke-width="1.5"/>
+      <text x="50" y="88" text-anchor="middle" style="font:600 7px sans-serif;fill:#c3ccc6">NEVER BELOW</text>
+    </svg>
+    <div class="body">
+      <div class="name">Romanian Deadlift</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">barbell 80 lbs</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">35 lb per hand · HARD STOP mid-shin</span></div>
+      </div>
+      <div class="cue">Soft knee bend locked in place — the knee angle doesn't change. Push the hips back, let the weight drag down your legs. <b>Mr. Cates: mid-shin is the floor.</b> Your hamstrings will want more depth because the stretch feels productive — it isn't under load, and the connective tissue hasn't earned it. If the dumbbells pass your ankles, the set is already wrong.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Leg press: seated in machine pressing platform away with both feet">
+      <line class="floor" x1="6" y1="92" x2="94" y2="92"/>
+      <path class="bench" d="M14 60 L36 60 L36 88 L14 88 Z"/>
+      <path class="bench" d="M14 60 L14 36 L26 36 L26 60 Z"/>
+      <circle class="head" cx="24" cy="46" r="6"/>
+      <path class="fig" d="M28 50 L34 64"/>
+      <path class="fig" d="M34 64 L56 54 L70 62"/>
+      <path class="ghost" d="M34 64 L48 62 L58 70"/>
+      <line class="eq" x1="68" y1="44" x2="80" y2="70"/>
+      <line class="eq" x1="80" y1="70" x2="90" y2="64"/>
+      <path class="arrow" d="M56 34 L74 42"/><path class="ah" d="M78 44 l-8 -3 3 8 z"/>
+      <text x="46" y="86" text-anchor="middle" style="font:600 7.5px sans-serif;fill:var(--ink-soft)">BACK FLAT ON SEAT</text>
+    </svg>
+    <div class="body">
+      <div class="name">Leg Press</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 95 · calibration</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 115 · shared machine, move pin</span></div>
+      </div>
+      <div class="cue">Feet flat, shoulder-width, toes slightly out. Lower until the knees reach about 90 degrees — <b>never let the lower back peel off the seat</b>. Drive through the whole foot, not the toes. Don't lock the knees at the top. Both pins are calibration guesses; adjust same-day if 12 reps feels empty.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Lying leg curl: face down on machine curling heels toward glutes">
+      <line class="floor" x1="6" y1="92" x2="94" y2="92"/>
+      <rect class="bench" x="18" y="56" width="58" height="10" rx="2"/>
+      <line class="eq" x1="28" y1="66" x2="28" y2="92"/><line class="eq" x1="66" y1="66" x2="66" y2="92"/>
+      <circle class="head" cx="24" cy="48" r="6"/>
+      <path class="fig" d="M30 52 L70 52"/>
+      <path class="ghost" d="M70 52 L88 54"/>
+      <path class="fig" d="M70 52 L82 44 L78 30"/>
+      <line class="eq" x1="70" y1="28" x2="86" y2="28"/>
+      <circle class="eqf" cx="78" cy="28" r="4"/>
+      <path class="arrow" d="M92 50 Q92 36 84 30"/><path class="ah" d="M80 28 l7 -3 -1 8 z"/>
+      <text x="42" y="76" text-anchor="middle" style="font:600 7.5px sans-serif;fill:var(--spot)">HIPS STAY DOWN</text>
+    </svg>
+    <div class="body">
+      <div class="name">Leg Curls</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 45 · calibration</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">pin 55</span></div>
+      </div>
+      <div class="cue">Face down, pad on the back of the ankles, curl the heels toward your glutes. <b>Hips stay pressed into the pad the whole rep.</b> Letting the hips rise means the lower back is helping instead of the hamstrings — if that happens, the weight is too high.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Goblet squat: standing holding one dumbbell at chest, squatting down between knees">
+      <line class="floor" x1="6" y1="90" x2="94" y2="90"/>
+      <circle class="head" cx="50" cy="24" r="6.5"/>
+      <path class="fig" d="M50 31 L50 56"/>
+      <path class="fig" d="M50 56 L38 68 L38 90"/>
+      <path class="fig" d="M50 56 L62 68 L62 90"/>
+      <path class="fig" d="M50 38 L42 42 M50 38 L58 42"/>
+      <line class="eq" x1="50" y1="34" x2="50" y2="48"/>
+      <circle class="eqf" cx="50" cy="34" r="4.5"/><circle class="eqf" cx="50" cy="48" r="4.5"/>
+      <path class="ghost" d="M50 56 L44 90 M50 56 L56 90"/>
+      <path class="arrow" d="M22 48 L22 66"/><path class="ah" d="M22 70 l-4 -8 h8 z"/>
+      <text x="50" y="82" text-anchor="middle" style="font:600 7.5px sans-serif;fill:var(--ink-soft)">TORSO UPRIGHT</text>
+    </svg>
+    <div class="body">
+      <div class="name">Goblet Squat</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">30 lb dumbbell at chest</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">35 lb dumbbell at chest</span></div>
+      </div>
+      <div class="cue">Hold one dumbbell vertically at chest height, both hands cupped under the top end. Feet shoulder-width, toes angled out slightly. Squat down between your knees — <b>the weight out front automatically keeps the torso upright</b>, no thinking required. Stable and safe for both lifters, nothing to navigate.</div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Calf raise: standing on a step, heels dropping below then rising onto toes">
+      <line class="floor" x1="6" y1="90" x2="94" y2="90"/>
+      <rect class="bench" x="34" y="74" width="32" height="16" rx="2"/>
+      <circle class="head" cx="50" cy="22" r="6.5"/>
+      <path class="fig" d="M50 29 L50 56 M50 56 L46 74 M50 56 L54 74"/>
+      <path class="fig" d="M50 34 L38 36 M50 34 L62 36"/>
+      <line class="eq" x1="34" y1="30" x2="34" y2="44"/><line class="eq" x1="66" y1="30" x2="66" y2="44"/>
+      <circle class="eqf" cx="34" cy="30" r="3.5"/><circle class="eqf" cx="34" cy="44" r="3.5"/>
+      <circle class="eqf" cx="66" cy="30" r="3.5"/><circle class="eqf" cx="66" cy="44" r="3.5"/>
+      <path class="ghost" d="M44 78 L56 78"/>
+      <path class="arrow" d="M78 62 L78 48"/><path class="ah" d="M78 44 l-4 8 h8 z"/>
+      <text x="50" y="98" text-anchor="middle" style="font:600 7.5px sans-serif;fill:var(--ink-soft)">PAUSE AT TOP</text>
+    </svg>
+    <div class="body">
+      <div class="name">Calf Raises</div>
+      <div class="pair">
+        <div class="who ruben"><span class="tag">RUBEN</span>3 × 10–12<span class="rx">pin 65 or 25 lb DBs</span></div>
+        <div class="who cates"><span class="tag">MR. CATES</span>3 × 10–12<span class="rx">30 lb DBs · optional</span></div>
+      </div>
+      <div class="cue">Heels hanging off a step gives the best range. Rise onto the balls of the feet as high as possible, <b>pause at the top for a beat</b>, lower all the way down with control. Calves are springy and will bounce through reps if you let them — slow and full-range is the dose.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= SUNDAY ================= -->
-<article class="day rest" id="sun" data-day="0">
-  <div class="day-head"><h2>Sunday — Review</h2><span class="today-flag">Today</span></div>
-  <div class="sub">Recovery + Weekly Review</div>
+<!-- ========== SUNDAY ========== -->
+<article class="day solo" id="sun" data-day="0">
+  <div class="day-head"><h2>Sunday — Solo</h2><span class="today-flag">Today</span></div>
+  <div class="cardio"><b>Cardio</b>Elliptical 25 min easy, or a walk. Steam room if you want it.</div>
+  <div class="sub">Solo work — Mr. Cates only</div>
+
   <div class="ex">
-    <div class="pair">
-      <div class="who cates"><span class="tag">MR. CATES</span>≤20 min easy walk, steam room<span class="rx">then: weight trend, waist at navel, log calibration numbers</span></div>
-      <div class="who ruben"><span class="tag">RUBEN</span>Light recovery<span class="rx">calibration numbers logged for next week's loads</span></div>
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Dumbbell bench press: lying on bench pressing two dumbbells upward">
+      <line class="floor" x1="8" y1="88" x2="92" y2="88"/>
+      <rect class="bench" x="22" y="60" width="56" height="9" rx="2"/>
+      <line class="eq" x1="30" y1="69" x2="30" y2="88"/><line class="eq" x1="70" y1="69" x2="70" y2="88"/>
+      <circle class="head" cx="30" cy="53" r="6"/>
+      <path class="fig" d="M36 56 L64 56 M64 56 L74 68 M64 56 L74 78"/>
+      <path class="fig" d="M44 55 L44 34 M56 55 L56 34"/>
+      <line class="eq" x1="34" y1="30" x2="54" y2="30"/><line class="eq" x1="46" y1="30" x2="66" y2="30"/>
+      <circle class="eqf" cx="34" cy="30" r="4"/><circle class="eqf" cx="54" cy="30" r="4"/>
+      <circle class="eqf" cx="46" cy="30" r="4"/><circle class="eqf" cx="66" cy="30" r="4"/>
+      <path class="arrow" d="M84 44 L84 24"/><path class="ah" d="M84 18 l-4 8 h8 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Dumbbell Bench Press</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">35 lb per hand</span></div>
+      </div>
+      <div class="cue">Last supplementary session of the week. Before cardio.</div>
     </div>
-    <div class="cue">Both lifters: if the last set of target reps ended with 3+ reps in the tank this week — barbells +5 lbs, dumbbells one increment, machines one plate.</div>
   </div>
-  <div class="sub">Mr. Cates — Meals</div>
-  <div class="meals">
-    <div class="feed"><span class="t">12:00</span><span class="m">Lean Shake Compact + creatine</span><span class="kcal">315 / 38g</span></div>
-    <div class="feed"><span class="t">3:30</span><span class="m">200g Greek yogurt, 100g berries, 10g nuts</span><span class="kcal">300 / 23g</span></div>
-    <div class="feed"><span class="t">7:00</span><span class="m">Batch-cook night: 200g protein, 200g starch, veg — cook extra for Mon/Wed lunches</span><span class="kcal">710 / 58g</span></div>
-    <div class="feed"><span class="t">Eve</span><span class="m">½ Creami pint</span><span class="kcal">180 / 30g</span></div>
-    <div class="day-total"><span>CATES TOTAL</span><span><b>REST DAY: 2,100 target / ~149g protein</b></span></div>
+
+  <div class="ex">
+    <svg class="dia" viewBox="0 0 100 100" role="img" aria-label="Cable crossover: standing between two high pulleys, arms arcing down and together">
+      <line class="floor" x1="8" y1="90" x2="92" y2="90"/>
+      <line class="eq" x1="12" y1="12" x2="12" y2="90"/><line class="eq" x1="88" y1="12" x2="88" y2="90"/>
+      <circle class="eqf" cx="12" cy="14" r="3.5"/><circle class="eqf" cx="88" cy="14" r="3.5"/>
+      <path class="ghost" d="M12 16 L34 38"/><path class="ghost" d="M88 16 L66 38"/>
+      <path class="eq" d="M12 16 L40 60"/><path class="eq" d="M88 16 L60 60"/>
+      <circle class="head" cx="50" cy="26" r="6.5"/>
+      <path class="fig" d="M50 33 L50 62 M50 40 L40 60 M50 40 L60 60"/>
+      <path class="fig" d="M50 62 L42 90 M50 62 L58 90"/>
+      <path class="arrow" d="M34 44 Q42 58 48 62"/><path class="ah" d="M50 64 l-6 -3 v6 z"/>
+      <path class="arrow" d="M66 44 Q58 58 52 62"/><path class="ah" d="M50 64 l6 -3 v6 z"/>
+    </svg>
+    <div class="body">
+      <div class="name">Cable Crossover</div>
+      <div class="pair">
+        <div class="who cates"><span class="tag">MR. CATES — SOLO</span>3 × 10–12<span class="rx">pin 8 · squeeze focus</span></div>
+      </div>
+      <div class="cue">Light, controlled, full squeeze at the bottom of every rep.</div>
+    </div>
   </div>
 </article>
 
-<!-- ================= RULES ================= -->
+<!-- ========== RULES ========== -->
 <section class="rules-sec">
-  <div class="sec-head"><h2>Constants & Rules — Both Lifters</h2></div>
+  <div class="sec-head"><h2>Constants &amp; Rules — Both Lifters</h2></div>
   <dl class="rules">
-    <div class="rule"><dt>Cates calories</dt><dd><b>Training days 2,250 · rest days 2,100</b> — never eat back exercise calories. Cuts come from carbs and fat only; protein stays pinned.</dd></div>
-    <div class="rule"><dt>Ruben calories</dt><dd>2,500–2,800 to gain — same food, bigger plate, extras his</dd></div>
-    <div class="rule"><dt>Cates protein</dt><dd>150–170 g across 3 feedings (~40–60 g each)</dd></div>
-    <div class="rule"><dt>Creatine</dt><dd><b>5 g monohydrate every day — both lifters.</b> Mr. Cates: noon shake. Ruben: any daily drink. Ruben: expect 2–4 lbs water weight gain over first 3–4 weeks.</dd></div>
-    <div class="rule"><dt>Water</dt><dd>70–90 oz (per labs)</dd></div>
-    <div class="rule"><dt>Effort — Cates</dt><dd>Every set stops 1–2 reps shy of failure; goal is holding or nudging weights up as fat comes off</dd></div>
+    <div class="rule"><dt>Rep standard</dt><dd><b>3 × 10–12 on everything</b> — the one exception is Ruben's deadlift at 3 × 5–6, which never changes</dd></div>
+    <div class="rule"><dt>Rest periods</dt><dd>90 seconds between sets · 2–3 minutes after bench, deadlift, and squat</dd></div>
+    <div class="rule"><dt>Creatine</dt><dd><b>5 g monohydrate daily — both lifters.</b> Ruben: expect 2–4 lbs water weight over the first 3–4 weeks. That's muscle fullness, not fat.</dd></div>
+    <div class="rule"><dt>Effort — Cates</dt><dd>Every set stops 1–2 reps shy of failure. The goal is holding or nudging weights up as fat comes off.</dd></div>
     <div class="rule"><dt>Effort — Ruben</dt><dd>Progressive overload — a little weight or a rep or two each week</dd></div>
-    <div class="rule"><dt>Progression</dt><dd>3+ reps left in tank on final set of 10–12 → barbells +5 lbs, dumbbells one increment, machines one plate</dd></div>
+    <div class="rule"><dt>Progression</dt><dd>3+ reps left in the tank on the final set → barbells +5 lbs, dumbbells one increment, machines one plate</dd></div>
     <div class="rule"><dt>Tendon guardrail</dt><dd>Ruben's squat and deadlift capped at <b>+5 lbs per week</b> once at working weight, no matter how easy it feels</dd></div>
-    <div class="rule"><dt>Barbell rule</dt><dd>Barbells are Ruben's, dumbbells and machine pins are Mr. Cates' — no plate-swapping between sets</dd></div>
-    <div class="rule"><dt>Spotting</dt><dd>During Ruben's bench, squat, and deadlift: Mr. Cates spots, never lifts. Weight confirmed aloud before every barbell set. Safety bars always set before squats.</dd></div>
-    <div class="rule"><dt>Hinges — Cates</dt><dd><b>Mid-shin hard stop on RDL</b> — no end range under load (hypermobility rule)</dd></div>
-    <div class="rule"><dt>Back rule</dt><dd>Any rep that feels wrong in the back ends the set — both lifters</dd></div>
-    <div class="rule"><dt>Machine pins</dt><dd>Numbers assume pound-labeled stacks; if unlabeled or kg, find hard-but-clean at target reps and log it as baseline</dd></div>
-    <div class="rule"><dt>Strength tripwire</dt><dd>Final-set reps dropping two Sunday reviews running → rest days return to 2,200</dd></div>
-    <div class="rule"><dt>Sunday review</dt><dd>Weight trend (ignore daily noise until week 3), waist at navel, calibration numbers for both lifters</dd></div>
-    <div class="rule"><dt>Protein short?</dt><dd>Full Creami pint instead of half (+30 g) or swap snack to cottage cheese</dd></div>
+    <div class="rule"><dt>Barbell rule</dt><dd>Barbells are Ruben's; dumbbells and machine pins are Mr. Cates'. No plate-swapping between sets.</dd></div>
+    <div class="rule"><dt>Spotting</dt><dd>On Ruben's bench, deadlift, and Smith squat: Mr. Cates spots or supervises, <b>never lifts</b>. Weight confirmed aloud before every barbell set. Safety catches set and confirmed before every squat set.</dd></div>
+    <div class="rule"><dt>Hinges — Cates</dt><dd><b>Mid-shin hard stop on RDL</b> — no end range under load. Non-negotiable hypermobility rule.</dd></div>
+    <div class="rule"><dt>Back rule</dt><dd>Any rep that feels wrong in the back ends the set — both lifters, no exceptions</dd></div>
+    <div class="rule"><dt>Machine pins</dt><dd>Numbers assume pound-labeled stacks. If unlabeled or in kg, find hard-but-clean at target reps and log that as baseline.</dd></div>
+    <div class="rule"><dt>Monday review</dt><dd>Weight trend (ignore daily noise until week 3), waist at navel with soft tape, calibration numbers for both lifters — the full week through Sunday is logged by then</dd></div>
+    <div class="rule"><dt>Strength tripwire</dt><dd>Final-set reps dropping two Monday reviews running → rest-day calories return to 2,200</dd></div>
+    <div class="rule"><dt>Solo days</dt><dd>Mon / Wed / Fri / Sun — bench 35s and crossover pin 8, then elliptical 25 min. <b>Lift before cardio</b> so strength isn't blunted.</dd></div>
   </dl>
 </section>
 
 <footer>
-  <span>The Cates Program · v2.4 · 3 × 10–12 · +5 lbs · 3 new exercises</span>
-  <span>Cable crossover · Straight-arm pulldown · Bulgarian split squat added</span>
+  <span>The Cates Program · v3.0 · Diagrams · Review day Monday</span>
+  <span>Tue Push · Thu Pull · Sat Legs · Mon/Wed/Fri/Sun solo</span>
 </footer>
 
 </div>
